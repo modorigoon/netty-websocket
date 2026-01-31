@@ -27,4 +27,10 @@ public class WebSocketExceptionAdvice {
         log.error("[RegisterProcessingException] error: ", e);
         return new ResponseEntity(ResponseEntity.ResponseStatus.ERROR, e.getMessage());
     }
+
+    @WebSocketExceptionHandler(throwables = { IllegalArgumentException.class })
+    public ResponseEntity illegalArgumentExceptionHandler(IllegalArgumentException e) {
+        log.warn("[IllegalArgumentException] error: {}", e.getMessage());
+        return new ResponseEntity(ResponseEntity.ResponseStatus.BAD_REQUEST, e.getMessage());
+    }
 }

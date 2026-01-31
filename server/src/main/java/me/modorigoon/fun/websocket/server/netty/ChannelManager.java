@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class ChannelManager {
 
-    private static final String CHANNEL_ID_ATTRIBUTE_KEY = "CHANNEL_ID:";
+    private static final AttributeKey<String> CHANNEL_ID_ATTRIBUTE_KEY = AttributeKey.valueOf("CHANNEL_ID");
 
     private final Map<String, Channel> channels;
 
@@ -34,6 +34,10 @@ public class ChannelManager {
         return this.channels.get(id);
     }
 
+    public boolean contains(String id) {
+        return this.channels.containsKey(id);
+    }
+
     public Channel remove(String id) {
         return this.channels.remove(id);
     }
@@ -46,18 +50,13 @@ public class ChannelManager {
         return null;
     }
 
-    AttributeKey<String> channelAttributeKey() {
-        return !AttributeKey.exists(CHANNEL_ID_ATTRIBUTE_KEY) ?
-                AttributeKey.newInstance(CHANNEL_ID_ATTRIBUTE_KEY) : AttributeKey.valueOf(CHANNEL_ID_ATTRIBUTE_KEY);
-    }
-
     private void setChannelIdAttributeKey(Channel channel, String id) {
         if (channel != null && id != null) {
-            channel.attr(channelAttributeKey()).set(id);
+            channel.attr(CHANNEL_ID_ATTRIBUTE_KEY).set(id);
         }
     }
 
     private String getChannelIdAttributeKey(Channel channel) {
-        return channel.attr(channelAttributeKey()).get();
+        return channel.attr(CHANNEL_ID_ATTRIBUTE_KEY).get();
     }
 }

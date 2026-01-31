@@ -31,6 +31,7 @@ public class RegisterController {
         Channel channel = registerService.register(req.getToken(), ctx.channel());
         if (channel == null) {
             future.completeExceptionally(new RegisterProcessingException("Oops! user register failure."));
+            return;
         }
         Register.Response response = new Register.Response(LocalDateTime.now(), "Hi! Good 2 see U!");
         future.complete(new ResponseEntity(req.getToken(), "Agent: " + req.getAgent(), response));

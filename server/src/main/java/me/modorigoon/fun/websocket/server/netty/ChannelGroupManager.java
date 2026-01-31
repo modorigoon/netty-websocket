@@ -32,19 +32,13 @@ public class ChannelGroupManager {
             throw new AlreadyChannelGroupException(name + " channel group already exists.");
         }
         ChannelGroup group = new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
-        return channelGroups.put(name, group);
+        channelGroups.put(name, group);
+        return group;
     }
 
     public ChannelGroup getOrCreate(String name) {
-        ChannelGroup group = get(name);
-        if (group == null) {
-            try {
-                group = create(name);
-            } catch (AlreadyChannelGroupException e) {
-                return get(name);
-            }
-        }
-        return group;
+        return channelGroups.computeIfAbsent(name,
+                k -> new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE));
     }
 
     public boolean removeChannelInGroup(String name, Channel channel) {

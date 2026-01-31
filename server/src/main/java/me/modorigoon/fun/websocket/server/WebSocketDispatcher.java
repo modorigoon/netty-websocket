@@ -60,8 +60,12 @@ public class WebSocketDispatcher implements Dispatcher {
     }
 
     private void single(MessageFrame frame) {
+        Channel channel = channelManager.get(frame.getDestination());
+        if (channel == null) {
+            log.warn("[WebSocketDispatcher:single] channel not found: {}", frame.getDestination());
+            return;
+        }
         try {
-            Channel channel = channelManager.get(frame.getDestination());
             ResponseEntity response = new ResponseEntity(frame.getDestination(), frame.getMessage(), frame.getData());
             channel.writeAndFlush(new TextWebSocketFrame(objectMapper.writeValueAsString(response)));
         } catch (JsonProcessingException e) {

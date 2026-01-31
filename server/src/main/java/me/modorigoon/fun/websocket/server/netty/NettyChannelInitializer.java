@@ -7,6 +7,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.stereotype.Component;
 
 
@@ -34,6 +35,7 @@ public class NettyChannelInitializer extends ChannelInitializer<Channel> {
                 .addLast(new HttpObjectAggregator(nettyProperties.getMaxContentLength()))
                 .addLast(new WebSocketServerCompressionHandler())
                 .addLast(new WebSocketServerProtocolHandler(nettyProperties.getSocketPath(), null, true))
+                .addLast("idleStateHandler", new IdleStateHandler(0, 0, 10))
                 .addLast(webSocketInboundHandler);
     }
 }

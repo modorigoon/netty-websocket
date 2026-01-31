@@ -36,7 +36,11 @@ public class NettyServer {
     @PreDestroy
     public void stop() {
         log.info("[NettyServer:stop] stop server.");
-        channel.close();
-        channel.parent().close();
+        if (channel != null) {
+            channel.close();
+            if (channel.parent() != null) {
+                channel.parent().close();
+            }
+        }
     }
 }

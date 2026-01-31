@@ -44,6 +44,10 @@ public class WebSocketTemplate {
         send(new MessageFrame(MessageFrame.ChannelType.SINGLE, dest, message, data));
     }
 
+    public boolean isRegistered(String name) {
+        return channelManager.contains(name);
+    }
+
     public Channel join(String name, Channel channel) {
         return channelManager.add(name, channel);
     }

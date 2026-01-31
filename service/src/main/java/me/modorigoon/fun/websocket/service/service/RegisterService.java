@@ -26,6 +26,9 @@ public class RegisterService {
         if (channel == null) {
             throw new IllegalArgumentException("User channel can not be a null.");
         }
+        if (webSocketTemplate.isRegistered(token)) {
+            return null;
+        }
         return webSocketTemplate.join(token, channel);
     }
 

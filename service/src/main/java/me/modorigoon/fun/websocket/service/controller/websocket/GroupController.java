@@ -30,6 +30,7 @@ public class GroupController {
         boolean joinSuccessful = groupService.join(req.getGroupName(), ctx.channel());
         if (!joinSuccessful) {
             future.completeExceptionally(new GroupProcessingException("Join to group failure."));
+            return;
         }
         Group.Response response = new Group.Response(LocalDateTime.now(), "Hi!");
         future.complete(new ResponseEntity(req.getGroupName(), "Done.", response));
@@ -40,6 +41,7 @@ public class GroupController {
         boolean leaveSuccessful = groupService.leave(req.getGroupName(), ctx.channel());
         if (!leaveSuccessful) {
             future.completeExceptionally(new GroupProcessingException("Leave group failure."));
+            return;
         }
         Group.Response response = new Group.Response(LocalDateTime.now(), "Bye!");
         future.complete(new ResponseEntity(req.getGroupName(), "Done.", response));

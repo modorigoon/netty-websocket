@@ -32,6 +32,9 @@ public class WebSocketAdviceInvoker {
         }
         for (Method method : bean.getClass().getMethods()) {
             WebSocketExceptionHandler handler = method.getAnnotation(WebSocketExceptionHandler.class);
+            if (handler == null) {
+                continue;
+            }
             Class<? extends Throwable>[] throwableClasses = handler.throwables();
             for (Class<? extends Throwable> cls : throwableClasses) {
                 if (StringUtils.equals(throwable.getClass().getName(), cls.getName())) {
